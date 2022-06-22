@@ -6,7 +6,7 @@ import { getProviders } from 'next-auth/react'
 import { signIn, signOut } from 'next-auth/react'
 import { useCallback, useEffect, useState } from 'react'
 
-const Login: NextPage = ({ providers }) => {
+const Login: NextPage = () => {
   const [providers, setProviders] = useState([])
   const getProvs = useCallback(async () => {
     setProviders(await getProviders())
