@@ -7,13 +7,13 @@ import { signIn, signOut } from 'next-auth/react'
 
 const Login: NextPage = ({ providers }) => {
   return (
-    <MainLayout title="Login">
+    <MainLayout title="Login - Netflix">
       <MainContent>
         <div className="z-0 flex max-w-4xl flex-col items-center">
           {Object.values(providers).map((provider) => (
             <button
               key={provider.id}
-              className="bg-netflix px-4 py-1 text-white"
+              className="bg-netflix px-4 py-1 text-lg text-white"
               type="button"
               onClick={() => signIn(provider.id, { callbackUrl: '/' })}
             >

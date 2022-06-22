@@ -11,6 +11,7 @@ interface IBannerProps {
 export default function Banner({ movies }: IBannerProps) {
   const [movie, setMovie] = useState<Movie | null>(null)
 
+  // Select random movie
   useEffect(() => {
     setMovie(movies[Math.floor(Math.random() * movies.length)])
   }, [movies])
@@ -18,7 +19,7 @@ export default function Banner({ movies }: IBannerProps) {
   return (
     <div className="flex h-full flex-col sm:h-screen">
       {/* image */}
-      <div className="absolute top-0 left-0 -z-10 h-screen w-full">
+      <div className="absolute top-0 left-0 -z-10 h-screen w-full bg-gradient-to-t from-netflixBg to-none bg-cover bg-center bg-no-repeat">
         <Image
           src={`${baseUrl}/${movie?.backdrop_path || movie?.poster_path}`}
           layout="fill"

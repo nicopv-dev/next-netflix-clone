@@ -14,7 +14,7 @@ interface INavigationLinkItem {
 
 const LINKS = [
   { id: 1, link: '/', title: 'Home' },
-  { id: 2, link: '/shows', title: 'Tv Shows' },
+  { id: 2, link: '/shows', title: 'TV Shows' },
   { id: 3, link: '/movies', title: 'Movies' },
   { id: 4, link: '/popular', title: 'Popular' },
   { id: 5, link: '/list', title: 'My List' },
@@ -147,9 +147,9 @@ const NavigationLinkItem = ({ link, title }: INavigationLinkItem) => {
 
   return (
     <li
-      className={`transition-all duration-200 ease-out ${
+      className={`transition-all duration-300 ease-out ${
         path === link ? 'text-white' : 'text-gray'
-      }`}
+      } hover:text-white`}
     >
       <Link href={link}>
         <a>{title}</a>
