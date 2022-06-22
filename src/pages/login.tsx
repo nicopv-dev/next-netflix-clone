@@ -4,8 +4,18 @@ import MainLayout from '../layouts/MainLayout'
 import { getProviders } from 'next-auth/react'
 
 import { signIn, signOut } from 'next-auth/react'
+import { useCallback, useEffect, useState } from 'react'
 
 const Login: NextPage = ({ providers }) => {
+  const [providers, setProviders] = useState([])
+  const getProvs = useCallback(async () => {
+    setProviders(await getProviders())
+  }, [providers])
+
+  useEffect(() => {
+    getProvs()
+  }, [])
+
   return (
     <MainLayout title="Login - Netflix">
       <MainContent>
@@ -27,13 +37,3 @@ const Login: NextPage = ({ providers }) => {
 }
 
 export default Login
-
-export async function getServerSideProps(): GetServerSideProps {
-  const providers = await getProviders()
-
-  return {
-    props: {
-      providers,
-    },
-  }
-}
