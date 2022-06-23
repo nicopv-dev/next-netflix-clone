@@ -1,5 +1,6 @@
 import type { GetServerSideProps, NextPage } from 'next'
 import { useSession } from 'next-auth/react'
+import { useEffect } from 'react'
 import { useAppSelector } from '../app/hooks'
 
 import Dashboard from '../components/Dashboard'
@@ -62,6 +63,10 @@ const Home = ({
 }: IHomeProps) => {
   const { data: session } = useSession()
   const { isAuth } = useAppSelector(selectUser)
+
+  useEffect(() => {
+    console.log(session)
+  }, [])
 
   return (
     <MainLayout title="Netflix - Home">
