@@ -1,12 +1,12 @@
 import { GetServerSideProps, NextPage } from 'next'
 import MainContent from '../components/MainContent'
 import MainLayout from '../layouts/MainLayout'
-import { getProviders } from 'next-auth/react'
+import { getProviders, getSession } from 'next-auth/react'
 
 import { signIn, signOut } from 'next-auth/react'
 import { useEffect } from 'react'
 
-const Login: NextPage = ({ providers }) => {
+const Login: NextPage = ({ providers, session }) => {
   return (
     <MainLayout title="Login - Netflix">
       <MainContent>
@@ -29,12 +29,22 @@ const Login: NextPage = ({ providers }) => {
 
 export default Login
 
-export async function getServerSideProps(): GetServerSideProps {
+export async function getServerSideProps(context): GetServerSideProps {
   const providers = await getProviders()
+  const session = await getSession(context)
+
+  if (session) {
+    return {
+      redirect: {
+        destination: '/',
+      },
+    }
+  }
 
   return {
     props: {
       providers,
+      session,
     },
   }
 }

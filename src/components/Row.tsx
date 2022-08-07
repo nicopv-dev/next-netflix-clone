@@ -8,7 +8,7 @@ interface IRowProps {
 }
 
 export default function Row({ movies, title }: IRowProps) {
-  const [isMoved, setIsMoved] = useState(false)
+  const [isMoved, setIsMoved] = useState<boolean>(false)
   const rowRef = useRef<HTMLDivElement>(null)
 
   const handleClickChevron = (direction: string) => {
@@ -25,7 +25,7 @@ export default function Row({ movies, title }: IRowProps) {
   }
 
   return (
-    <div className="z-0 flex flex-col gap-2">
+    <div className="z-20 flex flex-col gap-2">
       <h2 className="text-xl font-medium text-white">{title}</h2>
 
       <div className="relative">

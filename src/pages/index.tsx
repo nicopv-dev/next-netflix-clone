@@ -1,5 +1,6 @@
 import type { GetServerSideProps, NextPage } from 'next'
-import { useSession } from 'next-auth/react'
+import { Session } from 'next-auth'
+import { getSession, useSession } from 'next-auth/react'
 import { useEffect } from 'react'
 import { useAppSelector } from '../app/hooks'
 
@@ -8,13 +9,15 @@ import Info from '../components/Info'
 import MainContent from '../components/MainContent'
 import MainLayout from '../layouts/MainLayout'
 import { selectUser } from '../slices/userSlice'
-import { Movie } from '../types'
+import { Movie, Serie } from '../types'
 import requests from '../utils/requests'
 
 interface IHomeProps {
   trendingNow?: Movie[]
   trendingMovies: Movie[]
   trendingSeries: Movie[]
+  topRatedSeries: Serie[]
+  topRatedMovies: Movie[]
   error: boolean
 }
 
@@ -59,22 +62,22 @@ const Home = ({
   trendingNow,
   trendingMovies,
   trendingSeries,
+  topRatedSeries,
+  topRatedMovies,
   error,
 }: IHomeProps) => {
   const { data: session } = useSession()
-  const { isAuth } = useAppSelector(selectUser)
-
-  useEffect(() => {
-    console.log(session)
-  }, [])
 
   return (
     <MainLayout title="Netflix - Home">
       {session ? (
         <Dashboard
-          trendingNow={!error ? trendingNow : DATA}
+          error={error}
+          trendingNow={trendingNow}
           trendingMovies={trendingMovies}
           trendingSeries={trendingSeries}
+          topRatedSeries={topRatedSeries}
+          topRatedMovies={topRatedMovies}
         />
       ) : (
         <Info />
@@ -85,18 +88,37 @@ const Home = ({
 
 export default Home
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession(context)
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/login',
+      },
+    }
+  }
+
   try {
-    const [trendingNow, trendingMovies, trendingSeries] = await Promise.all([
+    const [
+      trendingNow,
+      trendingMovies,
+      trendingSeries,
+      topRatedSeries,
+      topRatedMovies,
+    ] = await Promise.all([
       fetch(requests.fetchAllTrending).then((res) => res.json()),
       fetch(requests.fetchTrendingMovies).then((res) => res.json()),
       fetch(requests.fetchTrendingSeries).then((res) => res.json()),
+      fetch(requests.fetchTopRatedSeries).then((res) => res.json()),
+      fetch(requests.fetchTopRatedMovies).then((res) => res.json()),
     ])
     return {
       props: {
         trendingNow: trendingNow?.results,
         trendingMovies: trendingMovies?.results,
         trendingSeries: trendingSeries?.results,
+        topRatedSeries: topRatedSeries?.results,
+        topRatedMovies: topRatedMovies?.results,
         error: false,
       },
     }

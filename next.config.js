@@ -9,6 +9,12 @@ module.exports = {
     ignoreBuildErrors: true,
   },
   images: {
-    domains: ['image.tmdb.org'],
+    domains: [
+      'image.tmdb.org',
+      'lh3.googleusercontent.com',
+      'www.gravatar.com',
+      'via.placeholder.com',
+      'previews.123rf.com',
+    ],
   },
 }

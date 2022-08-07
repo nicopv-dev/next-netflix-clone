@@ -10,6 +10,7 @@ import Link from 'next/link'
 interface INavigationLinkItem {
   link: string
   title: string
+  isScrolled: boolean
 }
 
 const LINKS = [
@@ -61,13 +62,13 @@ export default function Header() {
     <header
       className={`transition-all duration-300 ease-out ${
         !session || (isScrolled ? 'bg-netflixBg' : 'bg-transparent')
-      } fixed top-0 left-0 z-10 flex w-full justify-center ${
-        session && 'py-2'
+      } fixed top-0 left-0 z-30 flex w-full justify-center ${
+        session ? 'py-4' : 'py-4'
       } `}
     >
       <div className={`mx-8 flex w-full items-center justify-between lg:mx-10`}>
         <div className="flex items-center gap-8">
-          <div className={`${session ? 'w-24' : 'w-20 md:w-44'}`}>
+          <div className={`${session ? 'w-20' : 'w-28 md:w-44'}`}>
             <img
               alt=""
               src="https://1000marcas.net/wp-content/uploads/2020/01/Logo-Netflix.png"
@@ -81,6 +82,7 @@ export default function Header() {
                   key={item.id}
                   link={item.link}
                   title={item.title}
+                  isScrolled={isScrolled}
                 />
               ))}
             </ul>
@@ -89,7 +91,7 @@ export default function Header() {
 
         {session ? (
           <div className="flex grow items-center justify-end gap-4">
-            <form className="flex w-full items-center justify-end">
+            <form className="hidden w-full items-center justify-end sm:flex">
               <input
                 type="text"
                 placeholder="Buscar.."
@@ -137,7 +139,11 @@ export default function Header() {
   )
 }
 
-const NavigationLinkItem = ({ link, title }: INavigationLinkItem) => {
+const NavigationLinkItem = ({
+  link,
+  title,
+  isScrolled,
+}: INavigationLinkItem) => {
   const router = useRouter()
   const [path, setPath] = useState(router.pathname)
 
@@ -147,12 +153,12 @@ const NavigationLinkItem = ({ link, title }: INavigationLinkItem) => {
 
   return (
     <li
-      className={`transition-all duration-300 ease-out ${
-        path === link ? 'text-white' : 'text-gray'
-      } hover:text-white`}
+      className={`font-medium transition-all duration-300 ease-out ${
+        path === link ? 'text-netflix' : isScrolled ? 'text-gray' : 'text-white'
+      } hover:text-netflix`}
     >
       <Link href={link}>
-        <a>{title}</a>
+        <a className="nav-item">{title}</a>
       </Link>
     </li>
   )

@@ -1,4 +1,6 @@
 import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 import HeadTitle from '../components/HeadTitle'
 import Footer from '../components/Navigation/Footer'
 import Header from '../components/Navigation/Header'
@@ -15,7 +17,8 @@ interface IMainLayoutProps {
 }
 
 export default function MainLayout({ children, title }: IMainLayoutProps) {
-  const { status } = useSession()
+  const { status, data: session } = useSession()
+  const router = useRouter()
 
   return (
     <div className="gradient-to-b">
